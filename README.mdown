@@ -1,4 +1,26 @@
 zRSSFeed
 ========
 
-A fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/) with slight modifications by [me](http://github.com/vanntastic). This plugin parses RSS Feeds, plain and simple.
+A fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/) with slight modifications by [me](http://github.com/vanntastic). This plugin basically parses RSS Feeds using the [Google AJAX Feed API](http://code.google.com/apis/ajaxfeeds/).
+
+You can read the original readme over at: [http://www.zazar.net/developers/zrssfeed/](http://www.zazar.net/developers/zrssfeed/).
+
+
+Parameters
+==========
+
+- url (required) : An url to the feed
+- options : options to manipulate the feed (see below)
+
+Options
+=======
+
+- limit	(10) : The number of feeds to return.
+- header (true) :	If true, includes the header section containing the feed name and link.
+- titletag (h4) :	Specifies the HTML tag for the feed title.
+- date (true) :	If true, includes the feed date section.
+- content (true) : If true, includes the feed description.
+- snippet	(true) : If true, the snippet short description is shown available when available.
+- showerror (true) : If true and an error is returned from the Google Feeds API, the error message is shown.
+- errormsg : Replaces the default friendly message when an error occurs.
+- key	(null) : Optionally use a [Google API key](http://code.google.com/apis/ajaxfeeds/key.html).
