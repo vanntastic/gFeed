@@ -1,0 +1,4 @@
+zRSSFeed
+========
+
+A fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/) with slight modifications by [me](http://github.com/vanntastic). This plugin parses RSS Feeds, plain and simple.
