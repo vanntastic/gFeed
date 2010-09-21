@@ -26,6 +26,8 @@
       bodyClass: 'rssBody',
       rowClass: 'rssRow',
       titletag: 'h4',
+      headerHtml: '<div class="{headerClass}">\
+                   <a href="{link}" title="{description}">{title}</a></div>',
       date: true,
       content: true,
       snippet: true,
@@ -80,16 +82,18 @@
     }
     var html = '';
     var row = 'odd';
-
+    
     // Add header if required
     if (options.header)
-      html += '<div class="'+options.headerClass+'">' +
-        '<a href="'+feeds.link+'" title="'+ feeds.description +'">'+ feeds.title +'</a>' +
-        '</div>';
+      html += options.headerHtml.interpret($.extend(options,feeds));
+      // html += '<div class="'+options.headerClass+'">' +
+      //   '<a href="'+feeds.link+'" title="'+ feeds.description +'">'+ feeds.title +'</a>' +
+      //   '</div>';
 
     // Add body
-    html += '<div class="'+options.bodyClass+'">' +
-      '<ul>';
+    html += '<div class="{bodyClass}"><ul>'.interpret(options);
+    // html += '<div class="'+options.bodyClass+'">' +
+    //   '<ul>';
 
     // Add feeds
     for (var i=0; i<feeds.entries.length; i++) {
@@ -102,6 +106,7 @@
       var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
 
       // Add feed row
+      // CONTINUE here ... interpolate the following...
       html += '<li class="'+options.rowClass+' '+row+'">'+
         '<'+ options.titletag +'><a href="'+ entry.link +'" title="View this feed at '+ feeds.title +'">'+ entry.title +'</a></'+ options.titletag +'>'
       if (options.date) html += '<div>'+ pubDate +'</div>'
@@ -131,5 +136,18 @@
       '</div>'
 
     $(e).html(html);
+    
   };
 })(jQuery);
+
+
+// Borrowed from : http://javascript.crockford.com/remedial.html and
+// http://stackoverflow.com/questions/1408289/best-way-to-do-variable-interpolation-in-javascript
+String.prototype.interpret = function (o) {
+    return this.replace(/{([^{}]*)}/g,
+        function (a, b) {
+            var r = o[b];
+            return typeof r === 'string' || typeof r === 'number' ? r : a;
+        }
+    );
+};
