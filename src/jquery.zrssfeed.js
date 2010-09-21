@@ -107,7 +107,7 @@
 
       // Add feed row
       // CONTINUE here ... interpolate the following...
-      html += '<li class="'+options.rowClass+' '+row+'">'+
+      html += '<li class="'+options.rowClass+'">'+
         '<'+ options.titletag +'><a href="'+ entry.link +'" title="View this feed at '+ feeds.title +'">'+ entry.title +'</a></'+ options.titletag +'>'
       if (options.date) html += '<div>'+ pubDate +'</div>'
       if (options.content) {
@@ -124,12 +124,6 @@
 
       html += '</li>';
 
-      // Alternate row classes
-      if (row == 'odd') {
-        row = 'even';
-      } else {
-        row = 'odd';
-      }
     }
 
     html += '</ul>' +
