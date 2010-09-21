@@ -27,7 +27,9 @@
       rowClass: 'rssRow',
       titletag: 'h4',
       headerHtml: '<div class="{headerClass}">\
-                   <a href="{link}" title="{description}">{title}</a></div>',
+                    <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
+                   </div>\
+                   <div class="{bodyClass}"><ul>',
       date: true,
       content: true,
       snippet: true,
@@ -81,20 +83,28 @@
       return false;
     }
     var html = '';
-    var row = 'odd';
+    
+    // Abstract Feed args from (http://code.google.com/apis/ajaxfeeds/documentation/reference.html#JSON)
+    var feedObj = {
+      feedURL: feeds.feedURL,
+      feedTitle: feeds.title,
+      feedLink: feeds.link,
+      feedDescription: feeds.description,
+      feedAuthor: feeds.author,
+      feedEntries: feeds.entries
+    };
+    
+    var feedOptions = $.extend(options,feedObj);
     
     // Add header if required
     if (options.header)
-      html += options.headerHtml.interpret($.extend(options,feeds));
-      // html += '<div class="'+options.headerClass+'">' +
-      //   '<a href="'+feeds.link+'" title="'+ feeds.description +'">'+ feeds.title +'</a>' +
-      //   '</div>';
+      html += options.headerHtml.interpret(feedOptions);
+      console.log(feedOptions);
 
     // Add body
-    html += '<div class="{bodyClass}"><ul>'.interpret(options);
-    // html += '<div class="'+options.bodyClass+'">' +
-    //   '<ul>';
+    // html += '<div class="{bodyClass}"><ul>'.interpret(feedOptions);
 
+    // CONTINUE here, add the feed block parser...
     // Add feeds
     for (var i=0; i<feeds.entries.length; i++) {
 
@@ -106,10 +116,10 @@
       var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
 
       // Add feed row
-      // CONTINUE here ... interpolate the following...
       html += '<li class="'+options.rowClass+'">'+
         '<'+ options.titletag +'><a href="'+ entry.link +'" title="View this feed at '+ feeds.title +'">'+ entry.title +'</a></'+ options.titletag +'>'
       if (options.date) html += '<div>'+ pubDate +'</div>'
+      
       if (options.content) {
 
         // Use feed snippet if available and optioned
