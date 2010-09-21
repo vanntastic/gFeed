@@ -22,6 +22,8 @@
 		var defaults = {
 			limit: 10,
 			header: true,
+			headerClass: 'rssHeader',
+			bodyClass: 'rssBody',
 			titletag: 'h4',
 			date: true,
 			content: true,
@@ -80,13 +82,12 @@
 		
 		// Add header if required
 		if (options.header)
-			html +=	'<div class="rssHeader">' +
-				'<a href="'+feeds.link+'" title="'+ feeds.description +'">'+ feeds.title +'</a>' +
-				'</div>';
+			html +=	'<div class="' + options.headerClass + '">' +
+      				'<a href="' + feeds.link + '" title="'+ feeds.description + '">' + 
+      				feeds.title + '</a>' + '</div>';
 			
 		// Add body
-		html += '<div class="rssBody">' +
-			'<ul>';
+		html += '<div class="' + options.bodyClass + '">' + '<ul>';
 		
 		// Add feeds
 		for (var i=0; i<feeds.entries.length; i++) {
@@ -124,8 +125,7 @@
 			}			
 		}
 		
-		html += '</ul>' +
-			'</div>'
+		html += '</ul>' + '</div>'
 		
 		$(e).html(html);
 	};
