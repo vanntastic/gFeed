@@ -8,6 +8,7 @@
  *              (Based on original plugin jGFeed by jQuery HowTo)
  *
  * History:
+ * 2010-0922 : Refactor stuff, Added templating and removed some obselete options 
  * 1.0.1 - Corrected issue with multiple instances
  *
  **/
