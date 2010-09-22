@@ -24,6 +24,9 @@
       header: true,
       entriesHead: '<h1 class="rssHeader">\
                         <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
+                        <span style="font-size:10px;color:#ccc">\
+                          ({feedCount} feeds)\
+                        </span>\
                       </h1>\
                     <div class="rssBody">\
                     <ul>',
@@ -96,7 +99,8 @@
       feedLink: feeds.link,
       feedDescription: feeds.description,
       feedAuthor: feeds.author,
-      feedEntries: feeds.entries
+      feedEntries: feeds.entries,
+      feedCount: feeds.entries.length
     };
     
     var feedOptions = $.extend(options,feedObj);

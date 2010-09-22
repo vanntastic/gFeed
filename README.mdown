@@ -37,6 +37,27 @@ Options
 How to use the templating engine
 ================================
 
+The templating engine allows you to extract variables from google's ajax feed api, you can use these variables in the entriesHead, entriesBody, entriesFooter options. You can see what these variables represent at [http://code.google.com/apis/ajaxfeeds/documentation/reference.html#JSON](http://code.google.com/apis/ajaxfeeds/documentation/reference.html#JSON), simply use them enclosed in brackets {}, here's the available variables and what they translate to:
+
+Can be used in entriesHead and entriesFooter:
+
+- feedUrl : feed.feedUrl
+- feedTitle : feed.title
+- feedLink : feed.link
+- feedDescription : feed.description
+- feedAuthor : feed.author
+- feedCount : feed.entries.length
+
+Can only be used in entriesBody:
+
+- mediaGroup : entries.mediaGroup
+- title : entries.title
+- link : entries.link
+- content : entries.content
+- contentSnippet : entries.contentSnippet
+- publishedDate : entries.publishedDate
+- categories[] : entries.categories[] 
+
 
 
 
