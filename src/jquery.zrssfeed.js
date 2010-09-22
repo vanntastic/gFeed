@@ -139,7 +139,7 @@ String.prototype.interpret = function (o) {
         function (a, b) {
             var r = o[b];
             /*
-              TODO : maybe add in some lexer to parse some methods for that you can use to loop
+              TODO : maybe add in a lexer to parse some methods for that you can use to loop
               through objects...
             */
             return typeof r === 'string' || typeof r === 'number' ? r : a;

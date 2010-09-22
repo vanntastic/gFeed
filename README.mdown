@@ -13,9 +13,8 @@ I've added in a simple templating engine to use with this plugin, I don't very m
 Usage
 =====
 
-Simply just call this:
-
     $('#feed-container').rssfeed("http://someplace.com/feed",{Options});
+    
 
 Parameters
 ==========
@@ -37,5 +36,7 @@ Options
 
 How to use the templating engine
 ================================
+
+
 
 
