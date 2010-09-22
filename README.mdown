@@ -5,6 +5,17 @@ A fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/
 
 You can read the original readme over at: [http://www.zazar.net/developers/zrssfeed/](http://www.zazar.net/developers/zrssfeed/).
 
+Changes that I've made
+======================
+
+I've added in a simple templating engine to use with this plugin, I don't very much care for forced markup in plugins. Personally, I think it's too much opinion and it forces you to work with a co-existing markup structure which you may or may not like.
+
+Usage
+=====
+
+Simply just call this:
+
+    $('#feed-container').rssfeed("http://someplace.com/feed",{Options});
 
 Parameters
 ==========
@@ -16,11 +27,15 @@ Options
 =======
 
 - limit	(10) : The number of feeds to return.
-- header (true) :	If true, includes the header section containing the feed name and link.
-- titletag (h4) :	Specifies the HTML tag for the feed title.
-- date (true) :	If true, includes the feed date section.
-- content (true) : If true, includes the feed description.
-- snippet	(true) : If true, the snippet short description is shown available when available.
+- header (true) :	If true, includes the header section and subsequently the footer (defined with entriesHead and entriesFooter).
+- entriesHead : if header is true, then you can add markup with the templating engine (described below) here
+- entriesBody : this is the repeated body of each feed item that you output using the templating engine
+- entriesFooter : this is the footer block that is displayed only if you enabled a header
 - showerror (true) : If true and an error is returned from the Google Feeds API, the error message is shown.
 - errormsg : Replaces the default friendly message when an error occurs.
 - key	(null) : Optionally use a [Google API key](http://code.google.com/apis/ajaxfeeds/key.html).
+
+How to use the templating engine
+================================
+
+

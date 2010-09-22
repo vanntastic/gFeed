@@ -22,21 +22,17 @@
     var defaults = {
       limit: 10,
       header: true,
-      headerClass: 'rssHeader',
-      bodyClass: 'rssBody',
-      rowClass: 'rssRow',
-      titletag: 'h4',
-      entriesHead: '<h1 class="{headerClass}">\
+      entriesHead: '<h1 class="rssHeader">\
                         <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
                       </h1>\
-                    <div class="{bodyClass}">\
+                    <div class="rssBody">\
                     <ul>',
-      entriesBody:  '<li class="{rowClass}">\
-                      <{titletag}>\
+      entriesBody:  '<li class="rssRow">\
+                      <h4>\
                         <a href="{link}" title="View this feed at {title}">\
                           {title}\
                          </a>\
-                      </{titletag}>\
+                      </h4>\
                       <div style="font-size:10px;color:#ccc">{pubDate}</div>\
                       <p>{contentSnippet}</p>\
                       </li>',
@@ -45,6 +41,7 @@
       errormsg: '',
       key: null
     };
+    
     var options = $.extend(defaults, options);
 
     // Functions
