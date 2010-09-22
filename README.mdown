@@ -103,6 +103,8 @@ Example:
   	  displayHeadingAt: "#inline-heading"
   	})
     
+    <!-- Somewhere on your page -->
+    
     <h2 id="inline-heading">
       <a href="{feedLink}">{feedTitle}</a>
       <span style="font-size:10px; color: #ccc">
