@@ -26,13 +26,21 @@
       bodyClass: 'rssBody',
       rowClass: 'rssRow',
       titletag: 'h4',
-      headerHtml: '<div class="{headerClass}">\
-                    <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
-                   </div>\
-                   <div class="{bodyClass}"><ul>',
-      date: true,
-      content: true,
-      snippet: true,
+      entriesHead: '<h1 class="{headerClass}">\
+                        <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
+                      </h1>\
+                    <div class="{bodyClass}">\
+                    <ul>',
+      entriesBody:  '<li class="{rowClass}">\
+                      <{titletag}>\
+                        <a href="{link}" title="View this feed at {title}">\
+                          {title}\
+                         </a>\
+                      </{titletag}>\
+                      <div style="font-size:10px;color:#ccc">{pubDate}</div>\
+                      <p>{contentSnippet}</p>\
+                      </li>',
+      entriesFooter: '</ul></div>',               
       showerror: true,
       errormsg: '',
       key: null
@@ -98,13 +106,8 @@
     
     // Add header if required
     if (options.header)
-      html += options.headerHtml.interpret(feedOptions);
-      console.log(feedOptions);
+      html += options.entriesHead.interpret(feedOptions);
 
-    // Add body
-    // html += '<div class="{bodyClass}"><ul>'.interpret(feedOptions);
-
-    // CONTINUE here, add the feed block parser...
     // Add feeds
     for (var i=0; i<feeds.entries.length; i++) {
 
@@ -113,35 +116,22 @@
 
       // Format published date
       var entryDate = new Date(entry.publishedDate);
+      // this is available as pubDate
       var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
-
-      // Add feed row
-      html += '<li class="'+options.rowClass+'">'+
-        '<'+ options.titletag +'><a href="'+ entry.link +'" title="View this feed at '+ feeds.title +'">'+ entry.title +'</a></'+ options.titletag +'>'
-      if (options.date) html += '<div>'+ pubDate +'</div>'
+      var entryOptions = $.extend(feedOptions,entry,{pubDate: pubDate});
       
-      if (options.content) {
-
-        // Use feed snippet if available and optioned
-        if (options.snippet && entry.contentSnippet != '') {
-          var content = entry.contentSnippet;
-        } else {
-          var content = entry.content;
-        }
-
-        html += '<p>'+ content +'</p>'
-      }
-
-      html += '</li>';
+      // Combine the objects and parse
+      html += options.entriesBody.interpret(entryOptions);
 
     }
-
-    html += '</ul>' +
-      '</div>'
-
-    $(e).html(html);
     
+    // Setup the footer if the header exists
+    if (options.header)
+      html += options.entriesFooter.interpret(entryOptions);
+    
+    $(e).html(html);
   };
+  
 })(jQuery);
 
 
@@ -151,6 +141,10 @@ String.prototype.interpret = function (o) {
     return this.replace(/{([^{}]*)}/g,
         function (a, b) {
             var r = o[b];
+            /*
+              TODO : maybe add in some lexer to parse some methods for that you can use to loop
+              through objects...
+            */
             return typeof r === 'string' || typeof r === 'number' ? r : a;
         }
     );
