@@ -21,10 +21,37 @@ $(document).ready(function () {
 	$('#test').rssfeed('http://feeds.reuters.com/reuters/oddlyEnoughNews', {
 		limit: 5
 	});
+	
+	$('#inline').rssfeed('http://feeds.reuters.com/reuters/oddlyEnoughNews', {
+	  limit: 5,
+	  rowSnippet: ".row",
+	  displayHeadingAt: "#inline-heading"
+	})
 });
 </script>
 
 <div id="test"></div>
+
+<h1>Inline Example</h1>
+
+<h2 id="inline-heading">
+  <a href="{feedLink}">{feedTitle}</a>
+  <span style="font-size:10px; color: #ccc">
+    ({feedCount} Feeds)
+  </span>
+</h2>
+
+<ul id="inline">
+  <li class="row">
+    <h4>
+      <a href="{link}" title="View this inline feed at {title}">
+        {title}
+       </a>
+    </h4>
+    <div style="font-size:10px;color:#ccc">{pubDate}</div>
+    <p>{contentSnippet}</p>
+    </li>
+</ul>
 
 </body>
 </html>

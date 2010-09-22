@@ -39,7 +39,9 @@
                       <div style="font-size:10px;color:#ccc">{pubDate}</div>\
                       <p>{contentSnippet}</p>\
                       </li>',
-      entriesFooter: '</ul></div>',               
+      entriesFooter: '</ul></div>',
+      rowSnippet: false,     
+      displayHeadingAt: false,
       showerror: true,
       errormsg: '',
       key: null
@@ -105,30 +107,51 @@
     
     var feedOptions = $.extend(options,feedObj);
     
-    // Add header if required
-    if (options.header)
-      html += options.entriesHead.interpret(feedOptions);
-
-    // Add feeds
-    for (var i=0; i<feeds.entries.length; i++) {
-
-      // Get individual feed
-      var entry = feeds.entries[i];
-
-      // Format published date
-      var entryDate = new Date(entry.publishedDate);
-      // this is available as pubDate
-      var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
-      var entryOptions = $.extend(feedOptions,entry,{pubDate: pubDate});
+    if (options.rowSnippet) {
+      // display the heading if it's enabled
+      if (options.displayHeadingAt){
+        var newContent = $(options.displayHeadingAt).html().interpret(feedOptions);
+        $(options.displayHeadingAt).html(newContent);
+      }
+        
+      // Parse feeds
+      for (var i=0; i<feeds.entries.length; i++) {
+        var entry = feeds.entries[i];
+        // Format published date
+        var entryDate = new Date(entry.publishedDate);
+        // this is available as pubDate
+        var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
+        var entryOptions = $.extend(feedOptions,entry,{pubDate: pubDate});
+        
+        html += $(e).children(options.rowSnippet).html().interpret(entryOptions);
+      }
       
-      // Combine the objects and parse
-      html += options.entriesBody.interpret(entryOptions);
+    }else{
+      // Add header if required
+      if (options.header)
+        html += options.entriesHead.interpret(feedOptions);
 
-    }
-    
-    // Setup the footer if the header exists
-    if (options.header)
-      html += options.entriesFooter.interpret(entryOptions);
+      // Add feeds
+      for (var i=0; i<feeds.entries.length; i++) {
+
+        // Get individual feed
+        var entry = feeds.entries[i];
+
+        // Format published date
+        var entryDate = new Date(entry.publishedDate);
+        // this is available as pubDate
+        var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
+        var entryOptions = $.extend(feedOptions,entry,{pubDate: pubDate});
+
+        // Combine the objects and parse
+        html += options.entriesBody.interpret(entryOptions);
+
+      }
+
+      // Setup the footer if the header exists
+      if (options.header && !options.inline)
+        html += options.entriesFooter.interpret(entryOptions);
+    };
     
     $(e).html(html);
   };
@@ -142,10 +165,6 @@ String.prototype.interpret = function (o) {
     return this.replace(/{([^{}]*)}/g,
         function (a, b) {
             var r = o[b];
-            /*
-              TODO : maybe add in a lexer to parse some methods for that you can use to loop
-              through objects...
-            */
             return typeof r === 'string' || typeof r === 'number' ? r : a;
         }
     );

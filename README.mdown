@@ -1,14 +1,14 @@
-zRSSFeed
-========
+gFeed
+=====
 
-A fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/) with slight modifications by [me](http://github.com/vanntastic). This plugin basically parses RSS Feeds using the [Google AJAX Feed API](http://code.google.com/apis/ajaxfeeds/).
+gFeed is a fork of the jQuery [zRSSFeed plugin](http://www.zazar.net/developers/zrssfeed/) with modifications by [me](http://github.com/vanntastic). This plugin basically parses RSS Feeds using the [Google AJAX Feed API](http://code.google.com/apis/ajaxfeeds/). The main difference between this and the zrssfeed plugin is that you can actually style how your feed looks in the initialization of the plugin or you can actually write regular markup on your page using a basic templating engine. 
 
 You can read the original readme over at: [http://www.zazar.net/developers/zrssfeed/](http://www.zazar.net/developers/zrssfeed/).
 
 Changes that I've made
 ======================
 
-I've added in a simple templating engine to use with this plugin, I don't very much care for forced markup in plugins. Personally, I think it's too much opinion and it forces you to work with a co-existing markup structure which you may or may not like.
+I've added in a simple templating engine to use with this plugin, I'm not a huge fan of forced markup in plugins. Personally, I think it's too much opinion and it forces you to work with a co-existing markup structure which you probably might not like or which might not work in your current page.
 
 Usage
 =====
@@ -30,6 +30,8 @@ Options
 - entriesHead : if header is true, then you can add markup with the templating engine (described below) here
 - entriesBody : this is the repeated body of each feed item that you output using the templating engine
 - entriesFooter : this is the footer block that is displayed only if you enabled a header
+- rowSnippet : the id which will contain the inline template that will output the feeds, NOTE: this will disable entriesHead, entriesBody, and entriesFooter
+- displayHeadingAt : the id which contains the html for the entry header content, this will only display and parse if you have rowSnippet enabled, NOTE: this will disable entriesHead, entriesBody, and entriesFooter
 - showerror (true) : If true and an error is returned from the Google Feeds API, the error message is shown.
 - errormsg : Replaces the default friendly message when an error occurs.
 - key	(null) : Optionally use a [Google API key](http://code.google.com/apis/ajaxfeeds/key.html).
@@ -39,7 +41,7 @@ How to use the templating engine
 
 The templating engine allows you to extract variables from google's ajax feed api, you can use these variables in the entriesHead, entriesBody, entriesFooter options. You can see what these variables represent at [http://code.google.com/apis/ajaxfeeds/documentation/reference.html#JSON](http://code.google.com/apis/ajaxfeeds/documentation/reference.html#JSON), simply use them enclosed in brackets {}, here's the available variables and what they translate to:
 
-Can be used in entriesHead and entriesFooter:
+Can be used in entriesHead, entriesFooter, and displayHeadingAt:
 
 - feedUrl : feed.feedUrl
 - feedTitle : feed.title
@@ -48,7 +50,7 @@ Can be used in entriesHead and entriesFooter:
 - feedAuthor : feed.author
 - feedCount : feed.entries.length
 
-Can only be used in entriesBody:
+Can only be used in entriesBody and rowSnippet:
 
 - mediaGroup : entries.mediaGroup
 - title : entries.title
@@ -58,6 +60,69 @@ Can only be used in entriesBody:
 - publishedDate : entries.publishedDate
 - categories[] : entries.categories[] 
 
+Example:
 
 
+    $(document).ready(function () {
+    	$('#test').rssfeed('http://feeds.reuters.com/reuters/oddlyEnoughNews', {
+    		limit: 5,
+    		  header: true,
+          entriesHead: '<h1 class="rssHeader">\
+                            <a href="{feedLink}" title="{feedDescription}">{feedTitle}</a>\
+                            <span style="font-size:10px;color:#ccc">\
+                              ({feedCount} feeds)\
+                            </span>\
+                          </h1>\
+                        <div class="rssBody">\
+                        <ul>',
+          entriesBody:  '<li class="rssRow">\
+                          <h4>\
+                            <a href="{link}" title="View this feed at {title}">\
+                              {title}\
+                             </a>\
+                          </h4>\
+                          <div style="font-size:10px;color:#ccc">{pubDate}</div>\
+                          <p>{contentSnippet}</p>\
+                          </li>',
+          entriesFooter: '</ul></div>'
+    	});
+  	}
 
+
+Using it inline:
+================
+
+So maybe you're not big writing markup in javascript? Well no big deal, just simply pass an id to rowSnippet and write in your template (in your page!) for your feeds.
+
+Example:
+
+    // Say you set this in your document.ready
+    $('#inline').rssfeed('http://feeds.reuters.com/reuters/oddlyEnoughNews', {
+  	  limit: 5,
+  	  rowSnippet: ".row",
+  	  displayHeadingAt: "#inline-heading"
+  	})
+    
+    <h2 id="inline-heading">
+      <a href="{feedLink}">{feedTitle}</a>
+      <span style="font-size:10px; color: #ccc">
+        ({feedCount} Feeds)
+      </span>
+    </h2>
+    
+    <ul id="inline">
+      <li class="row">
+        <h4>
+          <a href="{link}" title="View this inline feed at {title}">
+            {title}
+           </a>
+        </h4>
+        <div style="font-size:10px;color:#ccc">{pubDate}</div>
+        <p>{contentSnippet}</p>
+      </li>
+    </ul>
+
+Why?
+====
+
+Because javascript concatenation sucks.
