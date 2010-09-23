@@ -30,7 +30,10 @@ Options
 - entriesHead : if header is true, then you can add markup with the templating engine (described below) here
 - entriesBody : this is the repeated body of each feed item that you output using the templating engine
 - entriesFooter : this is the footer block that is displayed only if you enabled a header
-- rowSnippet : the id which will contain the inline template that will output the feeds, NOTE: this will disable entriesHead, entriesBody, and entriesFooter
+- rowSnippet : an object that describes the snippet in the body where you want the feeds to output, (NOTE: this will disable entriesHead, entriesBody, and entriesFooter):
+            - head : a markup string that describes the heading of the output of the feeds
+            - body : an expresssion that describes the container of the feeds to output
+            - foot : a markup string that describes the footer of the output of the feeds
 - displayHeadingAt : the id which contains the html for the entry header content, this will only display and parse if you have rowSnippet enabled, NOTE: this will disable entriesHead, entriesBody, and entriesFooter
 - showerror (true) : If true and an error is returned from the Google Feeds API, the error message is shown.
 - errormsg : Replaces the default friendly message when an error occurs.
@@ -99,7 +102,11 @@ Example:
     // Say you set this in your document.ready
     $('#inline').rssfeed('http://feeds.reuters.com/reuters/oddlyEnoughNews', {
   	  limit: 5,
-  	  rowSnippet: ".row",
+  	  rowSnippet: {
+  	    head: '<li class="row">',
+  	    body: ".row",
+  	    foot: '</li>'
+	    },
   	  displayHeadingAt: "#inline-heading"
   	})
     

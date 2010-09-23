@@ -114,7 +114,7 @@
         var newContent = $(options.displayHeadingAt).html().interpret(feedOptions);
         $(options.displayHeadingAt).html(newContent);
       }
-        
+      
       // Parse feeds
       for (var i=0; i<feeds.entries.length; i++) {
         var entry = feeds.entries[i];
@@ -123,10 +123,14 @@
         // this is available as pubDate
         var pubDate = entryDate.toLocaleDateString() + ' ' + entryDate.toLocaleTimeString();
         var entryOptions = $.extend(feedOptions,entry,{pubDate: pubDate});
-        
-        html += $(e).children(options.rowSnippet).html().interpret(entryOptions);
+        var rowContent = "";
+        html += options.rowSnippet.head + 
+                $(e).children(options.rowSnippet.body).html().interpret(entryOptions) +
+                options.rowSnippet.foot
+        // html += $(e).children(options.rowSnippet).html().interpret(entryOptions)
+        // console.log($(e))
       }
-      
+        
     }else{
       // Add header if required
       if (options.header)
@@ -152,9 +156,12 @@
       // Setup the footer if the header exists
       if (options.header && !options.inline)
         html += options.entriesFooter.interpret(entryOptions);
+        
     };
     
-    $(e).html(html);
+    $(e).show();
+    $(e).html(html);  
+    
   };
   
 })(jQuery);
